@@ -1,0 +1,29 @@
+# Core dependencies
+numpy
+torch
+h5py
+opencv-python
+gym
+matplotlib
+imageio
+pillow
+scipy
+stable-baselines3
+
+# Utilities for image and video processing
+opencv-python>=4.5
+Pillow>=9.0.0
+
+
+# If you use or plan to use MuJoCo or robosuite directly, include it:
+# robosuite>=1.3.0  # (only if needed)
+
+
+# robomimic==0.3.0
+# stable-baselines3==1.7.0
+# torch==1.12.0
+# gym==0.21.0
+# opencv-python==4.5.5.64
+# Pillow==9.3.0
+# numpy==1.22.4
+

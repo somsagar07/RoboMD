@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+
+  <title>RoboMD</title>
+  <style>
+    /* Basic Reset */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family:'Google Sans', 'Noto Sans', 'Castoro', sans-serif;;
+      background-color: #f4f4f4;
+      padding: 20px;
+      color: #333;
+    }
+
+    header {
+      text-align: center;
+      padding: 40px 20px 20px;
+    }
+
+    /* Container for Logo + Title */
+    .title-container {
+      display: inline-flex;
+      justify-content: center;
+      gap: -50px; /* Space between logo and text */
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    /* Logo Styling */
+    /* .title-container img {
+      width: 50px; 
+      height: 50px;
+      margin-top: 5px; 
+    } */
+
+    /* Title Styling */
+    .main-title {
+      font-size: 3rem; /* Bigger font */
+      font-weight: bold;
+      text-align: center; /* Ensures natural left alignment */
+      line-height: 1.3; /* Space between lines */
+      max-width: 900px;
+    }
+
+    .subtitle {
+      font-size: 1.2rem;
+      color: #555;
+      margin-top: 5px;
+    }
+
+
+    .video-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    
+
+    video {
+      width: 120%;
+      max-width: 1000px;
+      border-radius: 4px;
+      border: none; /* Remp4es the border */
+      outline: none; /* Remp4es any focus outline */
+    }
+
+    .dropdown-container {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-top: 20px;
+    }
+
+    select {
+      padding: 10px;
+      font-size: 1rem;
+      border-radius: 4px;
+      border: 1px solid #ccc;
+      min-width: 150px;
+    }
+
+    /* Abstract Section Styling */
+    .abstract-container {
+        text-align: center;
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 20px;
+    }
+
+    .abstract-title {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+
+    .abstract-text {
+        font-size: 1.1rem;
+        text-align: justify;
+        line-height: 1.6;
+        color: #333;
+    }
+
+    /* Summary Section */
+    .summary-container {
+    text-align: center;
+    max-width: 1000px;
+    margin: 40px auto;    /* centers the section on the page */
+    padding: 20px;
+    }
+
+    .summary-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    }
+
+    .summary-figure {
+    margin: 0 auto 20px auto; /* center figure, add bottom spacing */
+    }
+
+    .summary-img {
+    width: 100%;
+    max-width: 1000px;     /* ensures figure doesn't get too large */
+    border-radius: 4px;
+    }
+
+    .summary-text {
+    font-size: 1.1rem;
+    text-align: justify;
+    line-height: 1.6;
+    color: #333;
+    }
+
+    /* Experiments & Results Section */
+    .experiments-container {
+    text-align: center;
+    max-width: 1000px;
+    margin: 40px auto;
+    padding: 20px;
+    }
+
+    .experiments-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 15px;
+    }
+
+    .experiments-figure {
+    margin: 0 auto 20px auto;
+    }
+
+    .experiments-img {
+    width: 100%;
+    max-width: 1000px;
+    border-radius: 4px;
+    }
+
+    .experiments-text {
+    font-size: 1.1rem;
+    text-align: justify;
+    line-height: 1.6;
+    color: #333;
+    }
+
+    .slider-container {
+            width: 90%;
+            max-width: 1200px;
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+        }
+
+        .slider {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slider video {
+            width: calc(100% / 3); /* Show 3 videos at a time */
+            height: auto;
+            flex-shrink: 0;
+            padding: 5px;
+            box-sizing: border-box;
+            border-radius: 20px;
+        }
+
+        .slider-control {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            color: white;
+            border: none;
+            padding: 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            font-size: 24px;
+            transition: background-color 0.3s ease;
+        }
+
+        .slider-control:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+
+        .slider-control.prev {
+            left: 10px;
+        }
+
+        .slider-control.next {
+            right: 10px;
+        }
+
+        @media (max-width: 768px) {
+            .slider video {
+                width: calc(100% / 2); /* Show 2 videos at a time on smaller screens */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .slider video {
+                width: 100%; /* Show 1 video at a time on mobile screens */
+            }
+        }
+
+        #secondaryVideo {
+            width: 400px; /* Adjust width as needed */
+            height: auto;  /* Keeps aspect ratio */
+            max-width: 100%; /* Ensures it doesn't overflow */
+            border-radius: 8px; /* Optional rounded corners */
+        }
+
+        .dropdown-container {
+        display: flex;
+        align-items: center; /* Centers items vertically */
+        gap: 10px; /* Adjusts spacing between elements */
+        }
+
+        .dropdown-container select {
+        padding: 5px;
+        font-size: 14px;
+        }
+
+        .title-container img {
+  width: 50px;
+  height: 50px;
+}
+
+.code-data-container {
+  display: flex;
+  gap: 2rem;        /* space between each icon block */
+  flex-wrap: wrap;  /* let items wrap on smaller screens */
+  align-items: center;
+  justify-content: center; /* center the entire row horizontally */
+}
+
+    /* Each icon + text is stacked in a column */
+    .icon-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .icon-block img {
+      width: 60px;  /* adjust as needed */
+      height: auto;
+      margin-bottom: 0.5rem;
+    }
+
+    /* Style the links (teal color, underlined) */
+    .icon-block a {
+      color: #008B8B;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+    
+    /* Subtle dashed or dotted underline look:
+       If you prefer dotted, replace 'dashed' with 'dotted'. */
+    .icon-block a {
+      text-decoration: none;
+      border-bottom: 1px dashed #008B8B;
+      padding-bottom: 2px;
+    }
+    .icon-block a:hover {
+      border-bottom-style: solid;  /* hover effect */
+    }
+
+  </style>
+</head>
+<body>
+    <header>
+        <div class="title-container">
+          <!-- Replace with your own icon source -->
+          
+          <h1 class="main-title">
+            <img src="images/logo.png" alt="Robot Icon" >
+            From Mystery to Mastery: Failure<br> 
+            Diagnosis for Improving Manipulation<br>
+            Policies
+          </h1>
+        </div>
+        <br>
+        <br>
+        <div class="subtitle"> <b>Anonymous Submission</b></div>
+      </header>
+
+      <br>
+      <center>
+        <div class="code-data-container">
+          
+          <!-- GitHub Repo -->
+          <div class="icon-block">
+            <img src="images/github.png" alt="GitHub Icon">
+            <a href="https://github.com/Robo-MD/Robo-MD-RSS.github.io" target="_blank">
+              Code
+            </a>
+          </div>
+      
+        </div>
+    
+      </center>
+      <br>
+    
+  <!-- Main Video Section -->
+  <div class="video-container">
+    <video id="mainVideo" autoplay muted loop playsinline>
+      <!-- Default video source -->
+      <source src="videos/RSS.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+
+
+
+
+  <!-- Abstract Section -->
+  <section class="abstract-container">
+      <h2 class="abstract-title">Abstract</h2>
+      <p class="abstract-text">
+        Robot manipulation policies often fail for unknown reasons, posing significant challenges for real-world deployment. Researchers and engineers typically address these failures using heuristic approaches, which are not only labor-intensive and costly but also prone to overlooking critical failure modes (FMs). This paper introduces Robot Manipulation Diagnosis (RoboMD), a systematic framework designed to automatically identify FMs arising from unexpected changes in the environment. To navigate the vast space of potential FMs for a given pre-trained manipulation policy, we leverage deep reinforcement learning (deep RL) to explore and uncover these FMs using a specially trained vision-language embedding that encodes a notion of failures. This approach enables users to probabilistically quantify and rank failures in previously unseen environmental conditions. Through extensive experiments across various manipulation tasks and algorithms, we demonstrate RoboMD's effectiveness in diagnosing unknown failures in unstructured environments, providing a systematic pathway to enhance the robustness of manipulation policies.
+      </p>
+  </section>
+
+    <!-- Video Slider -->
+
+    <center>
+        <div class="subtitle"> <b>Real World Variations</b></div>
+        <div class="slider-container">
+            <div class="slider">
+                <video autoplay muted loop playsinline>
+                    <source src="videos/real_world/1.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop playsinline>
+                    <source src="videos/real_world/2.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop playsinline>
+                    <source src="videos/real_world/3.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop playsinline>
+                    <source src="videos/real_world/4.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop playsinline>
+                    <source src="videos/real_world/5.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop playsinline>
+                    <source src="videos/real_world/6.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop playsinline>
+                    <source src="videos/real_world/7.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop playsinline>
+                    <source src="videos/real_world/8.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop playsinline>
+                    <source src="videos/real_world/9.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <video autoplay muted loop playsinline>
+                    <source src="videos/real_world/10.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </div>
+            <button class="slider-control prev" onclick="prevSlide()">&#10094;</button>
+            <button class="slider-control next" onclick="nextSlide()">&#10095;</button>
+        </div>
+
+
+    </center>
+
+  
+
+  <!-- Summary Section -->
+<section class="summary-container">
+    <h2 class="summary-title">Summary</h2>
+    <!-- Figure 1 -->
+    <figure class="summary-figure">
+      <!-- Update the src to point to your fig1 image -->
+      <img src="images/fig2.png" alt="Observe Failures, Uncover Failures, Adapt" class="summary-img">
+    </figure>
+    <!-- Summary Text -->
+    <p class="summary-text">
+        Robot Manipulation Diagnosis (RoboMD), a systematic framework designed to automatically identify FMs arising from unanticipated changes in the environment. Considering the vast space of potential FMs in a pre-trained manipulation policy, we leverage deep reinforcement learning (deep RL) to explore and uncover these FMs using a specially trained vision-language embedding that encodes a notion of failures. This approach enables users to probabilistically quantify and rank failures in previously unseen environmental conditions. Through extensive experiments across various manipulation tasks and algorithms, we demonstrate RoboMD's effectiveness in diagnosing unknown failures in unstructured environments, providing a systematic pathway to improve the robustness of manipulation policies.
+    </p>
+  </section>
+  
+  <!-- Experiments and Results Section -->
+  <section class="experiments-container">
+    <h2 class="experiments-title">Experiments and Results</h2>
+    <!-- Figure 2 -->
+    <figure class="experiments-figure">
+      <!-- Update the src to point to your fig2 image -->
+      <img src="images/fig3.png" alt="Radar plots for multiple models" class="experiments-img">
+    </figure>
+    <!-- Description / Explanation -->
+    <p class="experiments-text">
+        Individual FM analysis of multiple models. Each radar plot represents the failure likelihood of a specific actions. The axes correspond to different environmental setups (e.g., Red Cube, Green Table, Blue Table) (a) for real-world setup and (b,c) for simulation, and the numbers indicate the probability of failure for actions under each configuration.
+    </p>
+    <br><br>
+    <figure class="experiments-figure">
+        <!-- Update the src to point to your fig2 image -->
+        <img src="images/fig4.png" alt="Table" class="experiments-img">
+      </figure>
+      <!-- Description / Explanation -->
+      <p class="experiments-text">
+        Comparison of rankings for failure-inducing actions in continuous and discrete action spaces. ar represent actions performed in the real robot environment ar 1 = “Bread” (Unseen), ar 2 = “Red Cube”, ar 3 = “Milk Carton”, ar 4 = “Sprite”. as represent the actions performed in simluated environment as1 = “Red Table”, as2 = “Black Table” (Unseen), as3 = “Green Lighting.” Rank consistency indicates whether the rankings are preserved across the two formulations. The accuracy is computed over 21 environment variations.
+    </p>
+  </section>
+  
+
+
+
+<center>
+    <div class="subtitle"> <b>Simulation Variations</b></div>
+</center>
+
+  <!-- Dropdown Menus -->
+  <div class="dropdown-container">
+    <!-- Algorithm Dropdown: stays the same -->
+    Algo: <select id="algorithmSelect">
+      <option value="algo1">BC</option>
+      <option value="algo2">BCQ</option>
+      <option value="algo3">HBC</option>
+      <option value="algo4">BC Transformer</option>
+      <option value="algo5">Diffusion</option>
+    </select>
+
+    <!-- Task Dropdown -->
+    Task: <select id="taskSelect">
+      <option value="task1" selected>Lift</option>
+      <option value="task2">Can</option>
+      <option value="task3">Square</option>
+      <option value="task4">Stack</option>
+      <option value="task5">Threading</option>
+    </select>
+
+    <!-- Perturbation Dropdown (will be filled dynamically based on Task) -->
+    Variation: <select id="perturbationSelect">
+      <!-- Options will be injected by JavaScript -->
+    </select>
+  </div>
+
+  <br><br>
+
+  <div class="video-container">
+    <video id="secondaryVideo" autoplay muted loop playsinline>
+      <source src="videos/sim_videos/Lift/BC/default.mp4" type="video/mp4">
+      Your browser does not support the video tag.
+    </video>
+  </div>
+
+  <br><br>
+
+  <script>
+    /**********************************************************************
+     * Slider logic for the real-world videos (left/right arrow buttons)
+     **********************************************************************/
+    const slider = document.querySelector('.slider');
+    let currentIndex = 0;
+    const videosPerPage = 3; // Number of videos to show at a time
+
+    function nextSlide() {
+      const totalVideos = document.querySelectorAll('.slider video').length;
+      if (currentIndex < totalVideos - videosPerPage) {
+        currentIndex++;
+      } else {
+        currentIndex = 0;
+      }
+      updateSlider();
+    }
+
+    function prevSlide() {
+      const totalVideos = document.querySelectorAll('.slider video').length;
+      if (currentIndex > 0) {
+        currentIndex--;
+      } else {
+        currentIndex = totalVideos - videosPerPage;
+      }
+      updateSlider();
+    }
+
+    function updateSlider() {
+      const offset = -currentIndex * (100 / videosPerPage);
+      slider.style.transform = `translateX(${offset}%)`;
+    }
+
+    // Initialize Swiper (if you're using Swiper for something)
+    var swiper = new Swiper('.swiper-container', {
+      slidesPerView: 3,
+      spaceBetween: 20,
+      loop: true,
+      navigation: {
+        nextEl: '.swiper-button-next',
+        prevEl: '.swiper-button-prev',
+      },
+      pagination: {
+        el: '.swiper-pagination',
+        clickable: true,
+      },
+    });
+
+    // Speed up playback rate for videos with class "video-speedup" if desired
+    document.querySelectorAll(".video-speedup").forEach(video => {
+      video.playbackRate = 2.0;
+    });
+
+    /**********************************************************************
+     * (NEW) Dynamic population of Perturbation dropdown based on Task
+     **********************************************************************/
+
+    // 1) Define possible perturbations for each task lift, can , square, stack, threading
+    const perturbationsByTask = {
+      task1: [ 
+        { value: "perturbation1", text: "Default" },
+        { value: "perturbation2", text: "Cube Shape" },
+        { value: "perturbation3", text: "Table Color" },
+        { value: "perturbation4", text: "Table Size" },
+        { value: "perturbation5", text: "Robot Color" },
+        { value: "perturbation6", text: "Lighting Color" },
+      ],
+      task2: [
+        { value: "perturbation1", text: "Default" },
+        { value: "perturbation2", text: "Can Color" },
+        { value: "perturbation3", text: "Robot Color" },
+        { value: "perturbation4", text: "Lighting Color" },
+      ],
+      task3: [
+        { value: "perturbation1", text: "Default" },
+        { value: "perturbation4", text: "Table Color" },
+        { value: "perturbation5", text: "Table Size" },
+        { value: "perturbation6", text: "Robot Color" },
+        { value: "perturbation7", text: "Lighting Color" },
+      ],
+      task4: [
+        { value: "perturbation1", text: "Default" },
+        { value: "perturbation2", text: "Cube Shape" },
+        { value: "perturbation3", text: "Table Color" },
+        { value: "perturbation4", text: "Table Size" },
+        { value: "perturbation5", text: "Robot Color" },
+        { value: "perturbation6", text: "Lighting Color" },
+      ],
+      task5: [
+        { value: "perturbation1", text: "Default" },
+        { value: "perturbation2", text: "Table Color" },
+        { value: "perturbation3", text: "Table Size" },
+        { value: "perturbation4", text: "Robot Color" },
+        { value: "perturbation5", text: "Lighting Color" },
+      ],
+    };
+
+    // 2) References to our dropdowns + main video
+    const algorithmSelect = document.getElementById('algorithmSelect');
+    const taskSelect = document.getElementById('taskSelect');
+    const perturbationSelect = document.getElementById('perturbationSelect');
+    const selectionVideo = document.getElementById('secondaryVideo');
+
+
+    // 3) Populate the Perturbation dropdown based on the current Task
+    function updatePerturbationDropdown(selectedTask) {
+      // Clear existing options in the "perturbationSelect"
+      perturbationSelect.innerHTML = "";
+
+      // If this task is not in our dictionary, do nothing
+      if (!perturbationsByTask[selectedTask]) return;
+
+      // Otherwise, create an <option> for each possible perturbation
+      perturbationsByTask[selectedTask].forEach(({ value, text }) => {
+        const option = document.createElement('option');
+        option.value = value;
+        option.textContent = text;
+        perturbationSelect.appendChild(option);
+      });
+    }
+
+    // 4) Map (algo + task + perturbation) => specific video path
+    const videoMapping = { 
+        'algo1-task1-perturbation1': 'videos/sim_videos/Lift/BC/1.mp4',
+        'algo1-task1-perturbation2': 'videos/sim_videos/Lift/BC/2.mp4',
+        'algo1-task1-perturbation3': 'videos/sim_videos/Lift/BC/3.mp4',
+        'algo1-task1-perturbation4': 'videos/sim_videos/Lift/BC/5.mp4',
+        'algo1-task1-perturbation5': 'videos/sim_videos/Lift/BC/4.mp4',
+        'algo1-task1-perturbation6': 'videos/sim_videos/Lift/BC/6.mp4',
+
+        'algo1-task2-perturbation1': 'videos/sim_videos/Can/BC/1.mp4',
+        'algo1-task2-perturbation2': 'videos/sim_videos/Can/BC/2.mp4',
+        'algo1-task2-perturbation3': 'videos/sim_videos/Can/BC/3.mp4',
+        'algo1-task2-perturbation4': 'videos/sim_videos/Can/BC/4.mp4',
+
+        'algo1-task3-perturbation1': 'videos/sim_videos/Square/BC/1.mp4',
+        'algo1-task3-perturbation4': 'videos/sim_videos/Square/BC/2.mp4',
+        'algo1-task3-perturbation5': 'videos/sim_videos/Square/BC/3.mp4',
+        'algo1-task3-perturbation6': 'videos/sim_videos/Square/BC/4.mp4',
+        'algo1-task3-perturbation7': 'videos/sim_videos/Square/BC/5.mp4',
+
+        'algo1-task4-perturbation1': 'videos/sim_videos/Stack/BC/1.mp4',
+        'algo1-task4-perturbation2': 'videos/sim_videos/Stack/BC/2.mp4',
+        'algo1-task4-perturbation3': 'videos/sim_videos/Stack/BC/3.mp4',
+        'algo1-task4-perturbation4': 'videos/sim_videos/Stack/BC/4.mp4',
+        'algo1-task4-perturbation5': 'videos/sim_videos/Stack/BC/5.mp4',
+        'algo1-task4-perturbation6': 'videos/sim_videos/Stack/BC/6.mp4',
+
+        'algo1-task5-perturbation1': 'videos/sim_videos/Threading/BC/1.mp4',
+        'algo1-task5-perturbation2': 'videos/sim_videos/Threading/BC/2.mp4',
+        'algo1-task5-perturbation3': 'videos/sim_videos/Threading/BC/3.mp4',
+        'algo1-task5-perturbation4': 'videos/sim_videos/Threading/BC/4.mp4',
+        'algo1-task5-perturbation5': 'videos/sim_videos/Threading/BC/5.mp4',
+
+        //BCQ
+        'algo2-task1-perturbation1': 'videos/sim_videos/Lift/BCQ/1.mp4',
+        'algo2-task1-perturbation2': 'videos/sim_videos/Lift/BCQ/2.mp4',
+        'algo2-task1-perturbation3': 'videos/sim_videos/Lift/BCQ/3.mp4',
+        'algo2-task1-perturbation4': 'videos/sim_videos/Lift/BCQ/4.mp4',
+        'algo2-task1-perturbation5': 'videos/sim_videos/Lift/BCQ/5.mp4',
+        'algo2-task1-perturbation6': 'videos/sim_videos/Lift/BCQ/6.mp4',
+
+        'algo2-task2-perturbation1': 'videos/sim_videos/Can/BCQ/1.mp4',
+        'algo2-task2-perturbation2': 'videos/sim_videos/Can/BCQ/2.mp4',
+        'algo2-task2-perturbation3': 'videos/sim_videos/Can/BCQ/3.mp4',
+        'algo2-task2-perturbation4': 'videos/sim_videos/Can/BCQ/4.mp4',
+
+        'algo2-task3-perturbation1': 'videos/sim_videos/Square/BCQ/1.mp4',
+        'algo2-task3-perturbation4': 'videos/sim_videos/Square/BCQ/2.mp4',
+        'algo2-task3-perturbation5': 'videos/sim_videos/Square/BCQ/3.mp4',
+        'algo2-task3-perturbation6': 'videos/sim_videos/Square/BCQ/4.mp4',
+        'algo2-task3-perturbation7': 'videos/sim_videos/Square/BCQ/5.mp4',
+
+        'algo2-task4-perturbation1': 'videos/sim_videos/Stack/BCQ/1.mp4',
+        'algo2-task4-perturbation2': 'videos/sim_videos/Stack/BCQ/2.mp4',
+        'algo2-task4-perturbation3': 'videos/sim_videos/Stack/BCQ/3.mp4',
+        'algo2-task4-perturbation4': 'videos/sim_videos/Stack/BCQ/4.mp4',
+        'algo2-task4-perturbation5': 'videos/sim_videos/Stack/BCQ/5.mp4',
+        'algo2-task4-perturbation6': 'videos/sim_videos/Stack/BCQ/6.mp4',
+
+        'algo2-task5-perturbation1': 'videos/sim_videos/Threading/BCQ/1.mp4',
+        'algo2-task5-perturbation2': 'videos/sim_videos/Threading/BCQ/2.mp4',
+        'algo2-task5-perturbation3': 'videos/sim_videos/Threading/BCQ/3.mp4',
+        'algo2-task5-perturbation4': 'videos/sim_videos/Threading/BCQ/4.mp4',
+        'algo2-task5-perturbation5': 'videos/sim_videos/Threading/BCQ/5.mp4',
+
+        //HBC
+        'algo3-task1-perturbation1': 'videos/sim_videos/Lift/HBC/1.mp4',
+        'algo3-task1-perturbation2': 'videos/sim_videos/Lift/HBC/2.mp4',
+        'algo3-task1-perturbation3': 'videos/sim_videos/Lift/HBC/3.mp4',
+        'algo3-task1-perturbation4': 'videos/sim_videos/Lift/HBC/4.mp4',
+        'algo3-task1-perturbation5': 'videos/sim_videos/Lift/HBC/5.mp4',
+        'algo3-task1-perturbation6': 'videos/sim_videos/Lift/HBC/6.mp4',
+
+        'algo3-task2-perturbation1': 'videos/sim_videos/Can/HBC/1.mp4',
+        'algo3-task2-perturbation2': 'videos/sim_videos/Can/HBC/2.mp4',
+        'algo3-task2-perturbation3': 'videos/sim_videos/Can/HBC/3.mp4',
+        'algo3-task2-perturbation4': 'videos/sim_videos/Can/HBC/4.mp4',
+
+        'algo3-task3-perturbation1': 'videos/sim_videos/Square/HBC/1.mp4',
+        'algo3-task3-perturbation4': 'videos/sim_videos/Square/HBC/2.mp4',
+        'algo3-task3-perturbation5': 'videos/sim_videos/Square/HBC/3.mp4',
+        'algo3-task3-perturbation6': 'videos/sim_videos/Square/HBC/4.mp4',
+        'algo3-task3-perturbation7': 'videos/sim_videos/Square/HBC/5.mp4',
+
+        'algo3-task4-perturbation1': 'videos/sim_videos/Stack/HBC/1.mp4',
+        'algo3-task4-perturbation2': 'videos/sim_videos/Stack/HBC/2.mp4',
+        'algo3-task4-perturbation3': 'videos/sim_videos/Stack/HBC/3.mp4',
+        'algo3-task4-perturbation4': 'videos/sim_videos/Stack/HBC/4.mp4',
+        'algo3-task4-perturbation5': 'videos/sim_videos/Stack/HBC/5.mp4',
+        'algo3-task4-perturbation6': 'videos/sim_videos/Stack/HBC/6.mp4',
+
+        'algo3-task5-perturbation1': 'videos/sim_videos/Threading/HBC/1.mp4',
+        'algo3-task5-perturbation2': 'videos/sim_videos/Threading/HBC/2.mp4',
+        'algo3-task5-perturbation3': 'videos/sim_videos/Threading/HBC/3.mp4',
+        'algo3-task5-perturbation4': 'videos/sim_videos/Threading/HBC/4.mp4',
+        'algo3-task5-perturbation5': 'videos/sim_videos/Threading/HBC/5.mp4',
+
+        //BC Transformer
+        'algo4-task1-perturbation1': 'videos/sim_videos/Lift/BCT/1.mp4',
+        'algo4-task1-perturbation2': 'videos/sim_videos/Lift/BCT/2.mp4',
+        'algo4-task1-perturbation3': 'videos/sim_videos/Lift/BCT/3.mp4',
+        'algo4-task1-perturbation4': 'videos/sim_videos/Lift/BCT/4.mp4',
+        'algo4-task1-perturbation5': 'videos/sim_videos/Lift/BCT/5.mp4',
+        'algo4-task1-perturbation6': 'videos/sim_videos/Lift/BCT/6.mp4',
+
+        'algo4-task2-perturbation1': 'videos/sim_videos/Can/BCT/1.mp4',
+        'algo4-task2-perturbation2': 'videos/sim_videos/Can/BCT/2.mp4',
+        'algo4-task2-perturbation3': 'videos/sim_videos/Can/BCT/3.mp4',
+        'algo4-task2-perturbation4': 'videos/sim_videos/Can/BCT/4.mp4',
+
+        'algo4-task3-perturbation1': 'videos/sim_videos/Square/BCT/1.mp4',
+        'algo4-task3-perturbation4': 'videos/sim_videos/Square/BCT/2.mp4',
+        'algo4-task3-perturbation5': 'videos/sim_videos/Square/BCT/3.mp4',
+        'algo4-task3-perturbation6': 'videos/sim_videos/Square/BCT/4.mp4',
+        'algo4-task3-perturbation7': 'videos/sim_videos/Square/BCT/5.mp4',
+
+        'algo4-task4-perturbation1': 'videos/sim_videos/Stack/BCT/1.mp4',
+        'algo4-task4-perturbation2': 'videos/sim_videos/Stack/BCT/2.mp4',
+        'algo4-task4-perturbation3': 'videos/sim_videos/Stack/BCT/3.mp4',
+        'algo4-task4-perturbation4': 'videos/sim_videos/Stack/BCT/4.mp4',
+        'algo4-task4-perturbation5': 'videos/sim_videos/Stack/BCT/5.mp4',
+        'algo4-task4-perturbation6': 'videos/sim_videos/Stack/BCT/6.mp4',
+
+        'algo4-task5-perturbation1': 'videos/sim_videos/Threading/BCT/1.mp4',
+        'algo4-task5-perturbation2': 'videos/sim_videos/Threading/BCT/2.mp4',
+        'algo4-task5-perturbation3': 'videos/sim_videos/Threading/BCT/3.mp4',
+        'algo4-task5-perturbation4': 'videos/sim_videos/Threading/BCT/4.mp4',
+        'algo4-task5-perturbation5': 'videos/sim_videos/Threading/BCT/5.mp4',
+
+        //diff
+
+        'algo5-task1-perturbation1': 'videos/sim_videos/Lift/Diff/1.mp4',
+        'algo5-task1-perturbation2': 'videos/sim_videos/Lift/Diff/2.mp4',
+        'algo5-task1-perturbation3': 'videos/sim_videos/Lift/Diff/3.mp4',
+        'algo5-task1-perturbation4': 'videos/sim_videos/Lift/Diff/4.mp4',
+        'algo5-task1-perturbation5': 'videos/sim_videos/Lift/Diff/5.mp4',
+        'algo5-task1-perturbation6': 'videos/sim_videos/Lift/Diff/6.mp4',
+
+        'algo5-task2-perturbation1': 'videos/sim_videos/Can/Diff/1.mp4',
+        'algo5-task2-perturbation2': 'videos/sim_videos/Can/Diff/2.mp4',
+        'algo5-task2-perturbation3': 'videos/sim_videos/Can/Diff/3.mp4',
+        'algo5-task2-perturbation4': 'videos/sim_videos/Can/Diff/4.mp4',
+
+        'algo5-task3-perturbation1': 'videos/sim_videos/Square/Diff/1.mp4',
+        'algo5-task3-perturbation4': 'videos/sim_videos/Square/Diff/2.mp4',
+        'algo5-task3-perturbation5': 'videos/sim_videos/Square/Diff/3.mp4',
+        'algo5-task3-perturbation6': 'videos/sim_videos/Square/Diff/4.mp4',
+        'algo5-task3-perturbation7': 'videos/sim_videos/Square/Diff/5.mp4',
+
+        'algo5-task4-perturbation1': 'videos/sim_videos/Stack/Diff/1.mp4',
+        'algo5-task4-perturbation2': 'videos/sim_videos/Stack/Diff/2.mp4',
+        'algo5-task4-perturbation3': 'videos/sim_videos/Stack/Diff/3.mp4',
+        'algo5-task4-perturbation4': 'videos/sim_videos/Stack/Diff/4.mp4',
+        'algo5-task4-perturbation5': 'videos/sim_videos/Stack/Diff/5.mp4',
+        'algo5-task4-perturbation6': 'videos/sim_videos/Stack/Diff/6.mp4',
+
+        'algo5-task5-perturbation1': 'videos/sim_videos/Threading/Diff/1.mp4',
+        'algo5-task5-perturbation2': 'videos/sim_videos/Threading/Diff/2.mp4',
+        'algo5-task5-perturbation3': 'videos/sim_videos/Threading/Diff/3.mp4',
+        'algo5-task5-perturbation4': 'videos/sim_videos/Threading/Diff/4.mp4',
+        'algo5-task5-perturbation5': 'videos/sim_videos/Threading/Diff/5.mp4',
+    };
+    // 5) Update the "mainVideo" source whenever any dropdown changes
+    function updateVideo() {
+      const selectedAlgo = algorithmSelect.value;     // e.g. 'algo1'
+      const selectedTask = taskSelect.value;          // e.g. 'task2'
+      const selectedPert = perturbationSelect.value;  // e.g. 'perturbation1'
+
+      // Construct a key and see if we have a specific match
+      const videoKey = `${selectedAlgo}-${selectedTask}-${selectedPert}`;
+      const videoUrl = videoMapping[videoKey] || 'videos/sim_videos/Lift/BC/default.mp4';
+      
+
+      // Update the video source and play
+      selectionVideo.src = videoUrl;
+      selectionVideo.load();
+      selectionVideo.play();
+    }
+
+    // 6) Event listeners for the dropdowns
+    algorithmSelect.addEventListener('change', updateVideo);
+    taskSelect.addEventListener('change', () => {
+      // Whenever the user picks a new Task, rebuild the Perturbation dropdown
+      updatePerturbationDropdown(taskSelect.value);
+      // Then optionally update the video
+      updateVideo();
+    });
+    perturbationSelect.addEventListener('change', updateVideo);
+
+    // 7) On page load, initialize the Perturbation dropdown for the default Task
+    //    and set the video accordingly.
+    window.addEventListener('DOMContentLoaded', () => {
+      updatePerturbationDropdown(taskSelect.value);
+      updateVideo();
+    });
+  </script>
+</body>
+</html>
